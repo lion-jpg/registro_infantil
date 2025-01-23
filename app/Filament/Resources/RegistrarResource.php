@@ -11,35 +11,41 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class RegistrarResource extends Resource
 {
     protected static ?string $model = Registrar::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-plus';
+    protected static ?string $navigationLabel = 'Registrar';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nombre')
+                
+                Forms\Components\TextInput::make('nombres')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('apellido')
+                Forms\Components\TextInput::make('apellidos')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('CI')
+                Forms\Components\TextInput::make('centro_infantil')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('fotografia')
+                Forms\Components\TextInput::make('personas_autorizadas')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('parentesco')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\FileUpload::make('fotografia')
+                    ->required(),
                 Forms\Components\TextInput::make('celular')
                     ->required()
                     ->numeric(),
-                Forms\Components\DatePicker::make('fecha_nacimiento')
-                    ,
             ]);
     }
 
@@ -47,19 +53,24 @@ class RegistrarResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nombre')
+                Tables\Columns\TextColumn::make('nombres')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('apellido')
+                Tables\Columns\TextColumn::make('apellidos')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('CI')
+                Tables\Columns\TextColumn::make('centro_infantil')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('personas _autorizadas')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('parentesco')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('fotografia')
-                    ->searchable(),
+                ->label('Fotografía')
+                ->formatStateUsing(function ($state) {
+                    return "<img src='" . asset('storage/' . $state) . "' alt='Fotografía' style='border-radius: 50%; width: 50px; height: 50px; object-fit: cover;'>";
+                })
+                ->html(), // Esta opción es importante para renderizar el HTML,
                 Tables\Columns\TextColumn::make('celular')
                     ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('fecha_nacimiento')
-                    ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -75,6 +86,11 @@ class RegistrarResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Action::make('generarCredencial')
+                ->label('Generar Credencial PDF')
+                ->url(fn ($record) => route('generar-credencial', ['id' => $record->id]))
+                ->icon('heroicon-o-arrow-down-tray')
+                ->color('success'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

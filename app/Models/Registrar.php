@@ -9,10 +9,13 @@ class Registrar extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'nombre',       // Agrega 'nombre' a la lista de campos fillable
-        'apellido',     // Si también necesitas 'apellido'
-        'CI',           // Si también necesitas 'CI'
+        'nombres',       // Agrega 'nombre' a la lista de campos fillable
+        'apellidos',     // Si también necesitas 'apellido'
+        'centro_infantil',           // Si también necesitas 'CI'
+        'personas_autorizadas',           // Si también necesitas 'CI'
+        'parentesco',           // Si también necesitas 'CI'
+        'celular',
         'fotografia',   // Si también necesitas 'fotografia'
-        'celular',      // Si también necesitas 'celular'
+              // Si también necesitas 'celular'
     ];
 }
