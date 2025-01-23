@@ -34,6 +34,9 @@ class CredencialController extends Controller
         $backgroundImagePath = public_path('storage/cred_A.jpeg'); // Path to your background image file
         $pdf->Image($backgroundImagePath, 20, 60, 100, 70, 'JPG', '', '', true, 300, '', false, false, 0, false, false, false);
 
+        $backgroundImagePath1 = public_path('storage/cre_R.jpeg'); // Path to your background image file
+        $pdf->Image($backgroundImagePath1, 140, 60, 100, 70, 'JPG', '', '', true, 300, '', false, false, 0, false, false, false);
+
         // Agregar texto sobre la imagen de fondo
         $pdf->SetXY(70, 80); // Posición inicial del texto
         // $pdf->Cell(0, 10, 'Apellido: ' . htmlspecialchars($registrar['apellido']));
