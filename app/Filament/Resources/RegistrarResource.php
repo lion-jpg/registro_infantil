@@ -25,10 +25,16 @@ class RegistrarResource extends Resource
     {
         return $form
             ->schema([
-                
+
                 Forms\Components\TextInput::make('nombres')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->reactive()
+                    ->afterStateUpdated(function ($state) {
+                        // dd($state);
+                        // Convierte la primera letra a mayúscula y el resto a minúscula
+                        return ucfirst(strtolower($state));
+                    }),
                 Forms\Components\TextInput::make('apellidos')
                     ->required()
                     ->maxLength(255),
@@ -59,16 +65,16 @@ class RegistrarResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('centro_infantil')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('personas _autorizadas')
+                Tables\Columns\TextColumn::make('personas_autorizadas')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('parentesco')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('fotografia')
-                ->label('Fotografía')
-                ->formatStateUsing(function ($state) {
-                    return "<img src='" . asset('storage/' . $state) . "' alt='Fotografía' style='border-radius: 50%; width: 50px; height: 50px; object-fit: cover;'>";
-                })
-                ->html(), // Esta opción es importante para renderizar el HTML,
+                    ->label('Fotografía')
+                    ->formatStateUsing(function ($state) {
+                        return "<img src='" . asset('storage/' . $state) . "' alt='Fotografía' style='border-radius: 50%; width: 50px; height: 50px; object-fit: cover;'>";
+                    })
+                    ->html(), // Esta opción es importante para renderizar el HTML,
                 Tables\Columns\TextColumn::make('celular')
                     ->numeric()
                     ->sortable(),
@@ -87,10 +93,10 @@ class RegistrarResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Action::make('generarCredencial')
-                ->label('Generar Credencial PDF')
-                ->url(fn ($record) => route('generar-credencial', ['id' => $record->id]))
-                ->icon('heroicon-o-arrow-down-tray')
-                ->color('success'),
+                    ->label('Generar Credencial PDF')
+                    ->url(fn($record) => route('generar-credencial', ['id' => $record->id]))
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->color('success'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

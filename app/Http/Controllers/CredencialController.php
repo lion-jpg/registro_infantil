@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use TCPDF;
 use App\Models\Registrar;
-use Carbon\Carbon;
+// use Carbon\Carbon;
 
 class CredencialController extends Controller
 {
@@ -14,7 +14,7 @@ class CredencialController extends Controller
         // Obtener los datos del modelo Registrar usando el ID
         $registrar = Registrar::findOrFail($id);
         // Asegúrate de que la fecha sea una instancia de Carbon
-        $fechaNacimiento = Carbon::parse($registrar->fecha_nacimiento);
+        // $fechaNacimiento = Carbon::parse($registrar->fecha_nacimiento);
         // Crear una nueva instancia de TCPDF
         $pdf = new TCPDF('L', 'mm', array(215, 270), true, 'UTF-8', false);
 
@@ -48,6 +48,12 @@ class CredencialController extends Controller
 
         $pdf->SetXY(70, 94); // Nueva posición para el siguiente elemento
         $pdf->Cell(0, 10,htmlspecialchars($registrar['centro_infantil']));
+        
+        $pdf->SetXY(70, 101); // Nueva posición para el siguiente elemento
+        $pdf->Cell(0, 10, htmlspecialchars($registrar['parentesco']));
+
+        $pdf->SetXY(70, 108); // Nueva posición para el siguiente elemento
+        $pdf->Cell(0, 10, htmlspecialchars($registrar['celular']));
 
         // $pdf->SetXY(70, 98); // Nueva posición para el siguiente elemento
         // $pdf->Cell(0, 10, htmlspecialchars($registrar['personas_autorizadas']));
