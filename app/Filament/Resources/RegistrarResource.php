@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Storage;
 
 class RegistrarResource extends Resource
 {
@@ -25,7 +26,6 @@ class RegistrarResource extends Resource
     {
         return $form
             ->schema([
-
                 Forms\Components\TextInput::make('nombres')
                     ->required()
                     ->maxLength(255)
@@ -41,17 +41,25 @@ class RegistrarResource extends Resource
                 Forms\Components\TextInput::make('centro_infantil')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('personas_autorizadas')
+                Forms\Components\TextInput::make('persona_autorizada1')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('persona_autorizada2')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('persona_autorizada3')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('parentesco')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\FileUpload::make('fotografia')
-                    ->required(),
                 Forms\Components\TextInput::make('celular')
                     ->required()
                     ->numeric(),
+                Forms\Components\FileUpload::make('fotografia')
+                    ->required()
+                    ->directory('fotografias') // Subirá las imágenes a storage/app/public/fotografias
+                    ->preserveFilenames(),
             ]);
     }
 
@@ -65,16 +73,21 @@ class RegistrarResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('centro_infantil')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('personas_autorizadas')
+                Tables\Columns\TextColumn::make('persona_autorizada1')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('persona_autorizada2')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('persona_autorizada3')
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('parentesco')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('fotografia')
+                Tables\Columns\ImageColumn::make('fotografia')
                     ->label('Fotografía')
-                    ->formatStateUsing(function ($state) {
-                        return "<img src='" . asset('storage/' . $state) . "' alt='Fotografía' style='border-radius: 50%; width: 50px; height: 50px; object-fit: cover;'>";
-                    })
-                    ->html(), // Esta opción es importante para renderizar el HTML,
+                    ->circular()
+                    ->width(50)
+                    ->height(50)
+                    ,
                 Tables\Columns\TextColumn::make('celular')
                     ->numeric()
                     ->sortable(),

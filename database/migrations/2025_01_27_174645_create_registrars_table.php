@@ -16,10 +16,12 @@ return new class extends Migration
             $table->string('nombres');              // Campo para los nombres
             $table->string('apellidos');            // Campo para los apellidos
             $table->string('centro_infantil');      // Campo para el centro infantil
-            $table->string('personas_autorizadas');   // Campo para las personas autorizadas (usamos 'text' para mayor flexibilidad)
+            $table->string('persona_autorizada1')->nullable(); // Para la primera persona autorizada
+            $table->string('persona_autorizada2')->nullable(); // Para la segunda persona autorizada
+            $table->string('persona_autorizada3')->nullable();   // Campo para las personas autorizadas (usamos 'text' para mayor flexibilidad)
             $table->string('parentesco');           // Campo para el parentesco
             $table->string('celular');
-            $table->string('fotografia'); 
+            $table->string('fotografia');
             $table->timestamps();
         });
     }
