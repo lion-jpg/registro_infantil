@@ -26,40 +26,75 @@ class RegistrarResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nombres')
-                    ->required()
-                    ->maxLength(255)
-                    ->reactive()
-                    ->afterStateUpdated(function ($state) {
-                        // dd($state);
-                        // Convierte la primera letra a mayúscula y el resto a minúscula
-                        return ucfirst(strtolower($state));
-                    }),
-                Forms\Components\TextInput::make('apellidos')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('centro_infantil')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('persona_autorizada1')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('persona_autorizada2')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('persona_autorizada3')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('parentesco')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('celular')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\FileUpload::make('fotografia')
-                    ->required()
-                    ->directory('fotografias') // Subirá las imágenes a storage/app/public/fotografias
-                    ->preserveFilenames(),
+                Forms\Components\Section::make('Información Personal')
+                    ->description('Ingrese los datos del registrante')
+                    ->columns(1)
+                    ->schema([
+                        Forms\Components\TextInput::make('nombres')
+                            ->required()
+                            ->maxLength(255)
+                            ->reactive()
+                            ->afterStateUpdated(function ($state) {
+                                // dd($state);
+                                // Convierte la primera letra a mayúscula y el resto a minúscula
+                                return ucfirst(strtolower($state));
+                            }),
+                        Forms\Components\TextInput::make('apellidos')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('centro_infantil')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\Grid::make(3)  // Divide en 3 columnas iguales
+                            ->schema([
+                                Forms\Components\TextInput::make('persona_autorizada1')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->label('Persona Autorizada'),
+
+                                Forms\Components\TextInput::make('parentesco1')
+                                    ->required()
+                                    ->maxLength(255),
+
+                                Forms\Components\TextInput::make('celular1')
+                                    ->required()
+                                    ->maxLength(255),
+                            ]),
+                        Forms\Components\Grid::make(3)  // Divide en 3 columnas iguales
+                            ->schema([
+                                Forms\Components\TextInput::make('persona_autorizada2')
+
+                                    ->maxLength(255)
+                                    ->label('Segunda Persona Autorizada'),
+
+                                Forms\Components\TextInput::make('parentesco2')
+
+                                    ->maxLength(255),
+
+                                Forms\Components\TextInput::make('celular2')
+
+                                    ->maxLength(255),
+                            ]),
+                        Forms\Components\Grid::make(3)  // Divide en 3 columnas iguales
+                            ->schema([
+                                Forms\Components\TextInput::make('persona_autorizada3')
+
+                                    ->maxLength(255)
+                                    ->label('Tercera Persona Autorizada'),
+
+                                Forms\Components\TextInput::make('parentesco3')
+
+                                    ->maxLength(255),
+
+                                Forms\Components\TextInput::make('celular3')
+
+                                    ->maxLength(255),
+                            ]),
+                        Forms\Components\FileUpload::make('fotografia')
+                            // ->required()
+                            ->directory('fotografias') // Subirá las imágenes a storage/app/public/fotografias
+                            ->preserveFilenames(),
+                    ]),
             ]);
     }
 
@@ -86,8 +121,7 @@ class RegistrarResource extends Resource
                     ->label('Fotografía')
                     ->circular()
                     ->width(50)
-                    ->height(50)
-                    ,
+                    ->height(50),
                 Tables\Columns\TextColumn::make('celular')
                     ->numeric()
                     ->sortable(),
