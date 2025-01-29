@@ -14,6 +14,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Storage;
+use Filament\Forms\Components\Select;
+
+// use Filament\Tables\Actions\Action;
 
 class RegistrarResource extends Resource
 {
@@ -21,6 +24,12 @@ class RegistrarResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-plus';
     protected static ?string $navigationLabel = 'Registrar';
+    protected static ?string $activeNavigationIcon = 'heroicon-o-document-text';
+    protected static ?string $navigationBadgeTooltip = 'The number of users';
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
 
     public static function form(Form $form): Form
     {
@@ -42,19 +51,78 @@ class RegistrarResource extends Resource
                         Forms\Components\TextInput::make('apellidos')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('centro_infantil')
-                            ->required()
-                            ->maxLength(255),
+                        // Forms\Components\TextInput::make('centro_infantil')
+                        //     ->required()
+                        //     ->maxLength(255),
+                        Forms\Components\Select::make('centro_infantil')
+                            ->label('Centro Infantil')
+                            ->options([
+                                'ARCO IRIS' => 'Arco Iris',
+                                'MARIA AUXILIADORA' => 'Maria Auxiliadora',
+                                'POLICIA BOLIVIANA EPI 3' => 'Policia Boliviana EPI 3',
+                                'INSTITUTO TECNOLOGICO DON BOSQUITO' => 'Instituto Tércnologico Don Bosquito',
+                                'SANTIAGO II-1' => 'Santiago II-1',
+                                'VILLA BOLIVAR D (COMUNITARIO BOLIVAR)' => 'Villa Bolivar D (Comunitario Bolivar)',
+                                'HORIZONTES II' => 'Horizontes II',
+                                '21 DE DICIEMBRE' => '21 de Diciembre',
+                                'SAN FRANCISCO DE ASIS ' => 'San Fransisco de Asis',
+                                'PALLIRI' => 'Palliri',
+                                'HORIZONTES I' => 'Horizontes I',
+                                'APOSTOL SANTIAGO' => 'Apostol Santiago',
+                                'BEATA PIEDAD DE LA CRUZ' => 'Beata Piedad de La Cruz',
+                                'CAMPANITAS' => 'Campanitas',
+                                'SAGRADO CORAZON DE JESÚS' => 'Sagrado corazon de Jesús',
+                                'SAN MIGUEL' => 'San Miguel',
+                                'SAN URBANO' => 'San Urbano',
+                                'VILLA ALEMANIA' => 'Villa Alemania',
+                                'VIRGEN DE LA FUENSANTA' => 'Virgen De La Fuensanta',
+                                'SAN PEDRO' => 'San Pedro',
+                                'NUEVA MARKA' => 'Nueva Marka',
+                                'JISK´A UTITA-GESTION RENUEVA' => 'Jisk´a Utita-Gestion Renueva',
+                                '16 DE FEBRERO' => '16 de Febrero',
+                                'TUPAC KATARI "CAPULLITOS"' => 'Tupac Katari "Capullitos"',
+                                'RINCONCITO' => 'Rinconcito',
+                                'NUEVA ASUNCION' => 'Nueva Asuncion',
+                                'HUAYNA POTOSI CARITAS ALEGRES' => 'Huayna Potosi Caritas Alegres',
+                                'MENESIANO YURIÑANI' => 'Menesiano Yuriñani',
+                                'VIRGEN NIÑA' => 'Virge de la Niña',
+                                'LOS ANGELES FUTECRA' => 'Los Angeles Futecra',
+                                'FERROPETROL' => 'Ferropetrol',
+                                '14 DE SEPTIEMBRE VENTILLA' => '14 de Septiembre',
+                                '16 DE NOBIEMBRE' => '16 de Nobiembre',
+                                'POR UN MUNDO MEJOR' => 'Por Un Mundo Mejor',
+                                'ATIPIRIS' => 'Atipiris',
+                                '14 DE SEPTIEMBRE B' => '14 de Septiembre B',
+                                'SAN MARTIN' => ' San Martin',
+                                'BAUTISTA SAAVEDRA' => 'Bautista Saavedra',
+                                'CENTRO SOCIAL S.O.S.' => 'Centro Social S.O.S.',
+                                'SANTA ROSA DE LIMA' => 'Santa Rosa de Lima',
+                                'ESPECIAL MURURATA' => 'Especial Mururata',
+                                'CRISTO DEL CONSUELO' => 'Cristo Del Consuelo',
+                                'VILLA INGENIO' => 'Villa Ingenio',
+
+                            ])
+                            ->native(false),
                         Forms\Components\Grid::make(3)  // Divide en 3 columnas iguales
                             ->schema([
                                 Forms\Components\TextInput::make('persona_autorizada1')
+                                    ->placeholder('Nombre Completo')
                                     ->required()
                                     ->maxLength(255)
-                                    ->label('Persona Autorizada'),
-
-                                Forms\Components\TextInput::make('parentesco1')
+                                    ->label('Persona Autorizada 1'),
+                                Forms\Components\Select::make('parentesco1')
                                     ->required()
-                                    ->maxLength(255),
+                                    ->options([
+                                        'Padre' => 'Padre',
+                                        'Madre' => 'Madre',
+                                        'Tio' => 'Tio',
+                                        'Tia' => 'Tia',
+                                        'Hermano' => 'Hermano',
+                                        'Hermana' => 'Hermana',
+                                        'Abuelo' => 'Abuelo',
+                                        'Abuela' => 'Abuela',
+                                    ])
+                                    ->native(false),
 
                                 Forms\Components\TextInput::make('celular1')
                                     ->required()
@@ -65,11 +133,20 @@ class RegistrarResource extends Resource
                                 Forms\Components\TextInput::make('persona_autorizada2')
 
                                     ->maxLength(255)
-                                    ->label('Segunda Persona Autorizada'),
-
-                                Forms\Components\TextInput::make('parentesco2')
-
-                                    ->maxLength(255),
+                                    ->label('Segunda Persona Autorizada')
+                                    ->placeholder('Nombre Completo'),
+                                Forms\Components\Select::make('parentesco2')
+                                    ->options([
+                                        'Padre' => 'Padre',
+                                        'Madre' => 'Madre',
+                                        'Tio' => 'Tio',
+                                        'Tia' => 'Tia',
+                                        'Hermano' => 'Hermano',
+                                        'Hermana' => 'Hermana',
+                                        'Abuelo' => 'Abuelo',
+                                        'Abuela' => 'Abuela',
+                                    ])
+                                    ->native(false),
 
                                 Forms\Components\TextInput::make('celular2')
 
@@ -78,20 +155,28 @@ class RegistrarResource extends Resource
                         Forms\Components\Grid::make(3)  // Divide en 3 columnas iguales
                             ->schema([
                                 Forms\Components\TextInput::make('persona_autorizada3')
-
+                                    ->placeholder('Nombre Completo')
                                     ->maxLength(255)
                                     ->label('Tercera Persona Autorizada'),
-
-                                Forms\Components\TextInput::make('parentesco3')
-
-                                    ->maxLength(255),
+                                Forms\Components\Select::make('parentesco3')
+                                    ->options([
+                                        'Padre' => 'Padre',
+                                        'Madre' => 'Madre',
+                                        'Tio' => 'Tio',
+                                        'Tia' => 'Tia',
+                                        'Hermano' => 'Hermano',
+                                        'Hermana' => 'Hermana',
+                                        'Abuelo' => 'Abuelo',
+                                        'Abuela' => 'Abuela',
+                                    ])
+                                    ->native(false),
 
                                 Forms\Components\TextInput::make('celular3')
 
                                     ->maxLength(255),
                             ]),
                         Forms\Components\FileUpload::make('fotografia')
-                            // ->required()
+                            ->required()
                             ->directory('fotografias') // Subirá las imágenes a storage/app/public/fotografias
                             ->preserveFilenames(),
                     ]),
@@ -103,28 +188,54 @@ class RegistrarResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nombres')
+                    ->label('Nombres')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('apellidos')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('centro_infantil')
+                    ->label('Apellidos')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('persona_autorizada1')
-                    ->searchable(),
+                    ->label('Persona Autorizada 1')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('parentesco1')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('celular1')
+                    ->numeric()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('persona_autorizada2')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('persona_autorizada3')
-                    ->searchable(),
+                    ->label('Persona Autorizada 2')
 
-                Tables\Columns\TextColumn::make('parentesco')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('parentesco2')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('celular2')
+                    ->numeric()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('persona_autorizada3')
+                    ->label('Persona Autorizada 3')
+
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('parentesco3')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('celular3')
+                    ->numeric()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\ImageColumn::make('fotografia')
                     ->label('Fotografía')
                     ->circular()
                     ->width(50)
                     ->height(50),
-                Tables\Columns\TextColumn::make('celular')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -137,13 +248,21 @@ class RegistrarResource extends Resource
             ->filters([
                 //
             ])
+            ->toggleColumnsTriggerAction(
+                fn(Action $action) => $action
+                    ->button()
+                    ->label('Lista de Formulario'),
+            )
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Action::make('generarCredencial')
-                    ->label('Generar Credencial PDF')
+                    ->button()
+                    ->label('Descargar Credencial')
                     ->url(fn($record) => route('generar-credencial', ['id' => $record->id]))
                     ->icon('heroicon-o-arrow-down-tray')
-                    ->color('success'),
+                    ->color('info')
+                    ->outlined(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -31,22 +31,20 @@ class CredencialController extends Controller
         $pdf->AddPage();
 
         // Establecer el contenido de la credencial
-        $pdf->SetFont('helvetica', '', 9);
+        $pdf->SetFont('helvetica', '', 6);
 
         // Add background image
-        $backgroundImagePath = storage_path('app/public/cre1.jpg'); // Path to your background image file
+        $backgroundImagePath = storage_path('app/public/cre_A.jpeg'); // Path to your background image file
         $pdf->Image($backgroundImagePath, 0, 0, 100, 70, 'JPG', '', '', true, 300, '', false, false, 0, false, false, false);
-        // $backgroundImagePath = storage_path('app/public/cred_A.jpeg'); // Path to your background image file
-        // $pdf->Image($backgroundImagePath, 0, 0, 100, 70, 'JPG', '', '', true, 300, '', false, false, 0, false, false, false);
 
         // Agregar la fotografía del registrar
-        // if ($registrar->fotografia) {
-        //     $fotografiaPath = storage_path('app/public/' . $registrar->fotografia);
-        //     if (file_exists($fotografiaPath)) {
-        //         // Ajusta estas coordenadas según necesites
-        //         $pdf->Image($fotografiaPath, 4.5, 22.5, 39, 39, '', '', '', false, 300, '', false, false, 0);
-        //     }
-        // }
+        if ($registrar->fotografia) {
+            $fotografiaPath = storage_path('app/public/' . $registrar->fotografia);
+            if (file_exists($fotografiaPath)) {
+                // Ajusta estas coordenadas según necesites
+                $pdf->Image($fotografiaPath, 4.5, 22.5, 39, 39, '', '', '', false, 300, '', false, false, 0);
+            }
+        }
         // Agregar texto sobre la imagen de fondo
         $pdf->SetXY(46, 20); // Posición inicial del texto
         // $pdf->Cell(0, 10, 'Apellido: ' . htmlspecialchars($registrar['apellido']));
@@ -64,39 +62,38 @@ class CredencialController extends Controller
         $pdf->AddPage();
         
         // // Imagen del reverso
-        $backgroundImagePath1 = storage_path('app/public/cre2.jpg');
+        $backgroundImagePath1 = storage_path('app/public/cre_R.jpeg');
         $pdf->Image($backgroundImagePath1, 0, 0, 100, 70, 'JPG', '', '', true, 300, '', false, false, 0, false, false, false);
         // $backgroundImagePath1 = storage_path('app/public/cre_R.jpeg');
         // $pdf->Image($backgroundImagePath1, 0, 0, 100, 70, 'JPG', '', '', true, 300, '', false, false, 0, false, false, false);
         
         // Si hay personas autorizadas, las mostramos en el reverso
-        // $pdf->SetXY(10, 12.5); // Nueva posición para el siguiente elemento
-        // $pdf->Cell(0, 10, htmlspecialchars($registrar['persona_autorizada1']));
-        // $pdf->SetXY(10, 18.5); // Nueva posición para el siguiente elemento
-        // $pdf->Cell(0, 10, htmlspecialchars($registrar['persona_autorizada2']));
-        // $pdf->SetXY(10, 24.5); // Nueva posición para el siguiente elemento
-        // $pdf->Cell(0, 10, htmlspecialchars($registrar['persona_autorizada3']));
+        $pdf->SetXY(10, 12.5); // Nueva posición para el siguiente elemento
+        $pdf->Cell(0, 10, htmlspecialchars($registrar['persona_autorizada1']));
+        $pdf->SetXY(10, 18.5); // Nueva posición para el siguiente elemento
+        $pdf->Cell(0, 10, htmlspecialchars($registrar['persona_autorizada2']));
+        $pdf->SetXY(10, 24.5); // Nueva posición para el siguiente elemento
+        $pdf->Cell(0, 10, htmlspecialchars($registrar['persona_autorizada3']));
 
-        // $pdf->SetXY(60, 12.5); // Nueva posición para el siguiente elemento
-        // $pdf->Cell(0, 10, htmlspecialchars($registrar['parentesco1']));
-        // $pdf->SetXY(60, 18.5); // Nueva posición para el siguiente elemento
-        // $pdf->Cell(0, 10, htmlspecialchars($registrar['parentesco2']));
-        // $pdf->SetXY(60, 24.5); // Nueva posición para el siguiente elemento
-        // $pdf->Cell(0, 10, htmlspecialchars($registrar['parentesco3']));
+        $pdf->SetXY(60, 12.5); // Nueva posición para el siguiente elemento
+        $pdf->Cell(0, 10, htmlspecialchars($registrar['parentesco1']));
+        $pdf->SetXY(60, 18.5); // Nueva posición para el siguiente elemento
+        $pdf->Cell(0, 10, htmlspecialchars($registrar['parentesco2']));
+        $pdf->SetXY(60, 24.5); // Nueva posición para el siguiente elemento
+        $pdf->Cell(0, 10, htmlspecialchars($registrar['parentesco3']));
         
-        // $pdf->SetXY(77, 12.5); // Nueva posición para el siguiente elemento
-        // $pdf->Cell(0, 10, htmlspecialchars($registrar['celular1']));
-        // $pdf->SetXY(77, 18.5); // Nueva posición para el siguiente elemento
-        // $pdf->Cell(0, 10, htmlspecialchars($registrar['celular2']));
-        // $pdf->SetXY(77, 24.5); // Nueva posición para el siguiente elemento
-        // $pdf->Cell(0, 10, htmlspecialchars($registrar['celular3']));
+        $pdf->SetXY(77, 12.5); // Nueva posición para el siguiente elemento
+        $pdf->Cell(0, 10, htmlspecialchars($registrar['celular1']));
+        $pdf->SetXY(77, 18.5); // Nueva posición para el siguiente elemento
+        $pdf->Cell(0, 10, htmlspecialchars($registrar['celular2']));
+        $pdf->SetXY(77, 24.5); // Nueva posición para el siguiente elemento
+        $pdf->Cell(0, 10, htmlspecialchars($registrar['celular3']));
 
 
         // Escribir el contenido HTML en el PDF
         // $pdf->writeHTML($html, true, false, true, false, '');
 
         // Salida del archivo PDF
-        // $pdf->Output('credencial_' . $registrar->CI . '.pdf', 'I');
-        $pdf->Output('credencial_.pdf', 'I');
+        $pdf->Output('credencial_' . $registrar->nombres . '_' . $registrar->apellidos . '.pdf', 'I');
     }
 }
