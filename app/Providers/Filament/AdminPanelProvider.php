@@ -27,11 +27,11 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->brandLogo( asset('storage/logo.png') )
+            ->brandLogo( asset('storage/LOG1.png') )
             ->brandLogoHeight('4rem')
-            ->favicon(asset('storage/logo.png'))
+            ->favicon(asset('storage/LOG1.png'))
             ->colors([
-                'primary' => Color::Orange,
+                'primary' => Color::Purple,
             ])
             // ->defaultLocale('es')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')

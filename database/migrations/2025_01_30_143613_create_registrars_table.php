@@ -16,6 +16,11 @@ return new class extends Migration
             $table->string('nombres');              // Campo para los nombres
             $table->string('apellidos');            // Campo para los apellidos
             $table->string('centro_infantil');      // Campo para el centro infantil
+            $table->string('nombre_padre');              // Campo para los nombres
+            $table->string('celular_p');              // Campo para los nombres
+            $table->string('nombre_madre');              // Campo para los nombres
+            $table->string('celular_m');              // Campo para los nombres
+            $table->string('direccion');              // Campo para los nombres
             $table->string('persona_autorizada1')->nullable(); // Para la primera persona autorizada
             $table->string('parentesco1')->nullable();
             $table->string('celular1')->nullable();

@@ -34,7 +34,7 @@ class CredencialController extends Controller
         $pdf->SetFont('helvetica', '', 6);
 
         // Add background image
-        $backgroundImagePath = storage_path('app/public/cre_A.jpeg'); // Path to your background image file
+        $backgroundImagePath = storage_path('app/public/cred1.jpg'); // Path to your background image file
         $pdf->Image($backgroundImagePath, 0, 0, 100, 70, 'JPG', '', '', true, 300, '', false, false, 0, false, false, false);
 
         // Agregar la fotografía del registrar
@@ -57,16 +57,40 @@ class CredencialController extends Controller
         $pdf->SetXY(46, 34.5); // Nueva posición para el siguiente elemento
         $pdf->Cell(0, 9, htmlspecialchars($registrar['centro_infantil']));
 
-        
-        
+        // $datos = json_encode([
+        //     'Información Personal' => [
+        //         'Nombres' => $registrar['nombres'],
+        //         'Apellidos' => $registrar['apellidos'],
+        //         'Centro Infantil' => $registrar['centro_infantil']
+        //     ],
+        //     'Contacto' => [
+        //         'Celular' => $registrar['celular1']
+        //     ]
+        // ], JSON_UNESCAPED_UNICODE);
+        $datos = "INFORMACIÓN DE CONTACTO\n"
+            . "------------------------\n"
+            . "Padre: " . $registrar['nombre_padre'] . "\n"
+            . "Celular: " . $registrar['celular_p'] . "\n"
+            . "------------------------\n"
+            . "Madre: " . $registrar['nombre_madre'] . "\n"
+            . "Celular: " . $registrar['celular_m'] . "\n"
+            . "------------------------\n"
+            . "Dirección: " . $registrar['direccion'] . "\n"
+            . "Centro Infantil: " . $registrar['centro_infantil'];
+
+
+        // $datos = $registrar['nombres']. $registrar['apellidos']. $registrar['celular1'];
+        $pdf->write2DBarcode($datos , 'QRCODE,H', 47, 43.5, 17, 17, array(), 'N');
+        // *****************************************************************************************
+
         $pdf->AddPage();
-        
+
         // // Imagen del reverso
         $backgroundImagePath1 = storage_path('app/public/cre_R.jpeg');
         $pdf->Image($backgroundImagePath1, 0, 0, 100, 70, 'JPG', '', '', true, 300, '', false, false, 0, false, false, false);
         // $backgroundImagePath1 = storage_path('app/public/cre_R.jpeg');
         // $pdf->Image($backgroundImagePath1, 0, 0, 100, 70, 'JPG', '', '', true, 300, '', false, false, 0, false, false, false);
-        
+
         // Si hay personas autorizadas, las mostramos en el reverso
         $pdf->SetXY(10, 12.5); // Nueva posición para el siguiente elemento
         $pdf->Cell(0, 10, htmlspecialchars($registrar['persona_autorizada1']));
@@ -81,7 +105,7 @@ class CredencialController extends Controller
         $pdf->Cell(0, 10, htmlspecialchars($registrar['parentesco2']));
         $pdf->SetXY(60, 24.5); // Nueva posición para el siguiente elemento
         $pdf->Cell(0, 10, htmlspecialchars($registrar['parentesco3']));
-        
+
         $pdf->SetXY(77, 12.5); // Nueva posición para el siguiente elemento
         $pdf->Cell(0, 10, htmlspecialchars($registrar['celular1']));
         $pdf->SetXY(77, 18.5); // Nueva posición para el siguiente elemento
@@ -94,6 +118,7 @@ class CredencialController extends Controller
         // $pdf->writeHTML($html, true, false, true, false, '');
 
         // Salida del archivo PDF
+
         $pdf->Output('credencial_' . $registrar->nombres . '_' . $registrar->apellidos . '.pdf', 'I');
     }
 }

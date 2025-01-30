@@ -40,6 +40,7 @@ class RegistrarResource extends Resource
                     ->columns(1)
                     ->schema([
                         Forms\Components\TextInput::make('nombres')
+                            ->placeholder('Nombre del niño')
                             ->required()
                             ->maxLength(255)
                             ->reactive()
@@ -49,6 +50,7 @@ class RegistrarResource extends Resource
                                 return ucfirst(strtolower($state));
                             }),
                         Forms\Components\TextInput::make('apellidos')
+                            ->placeholder('Apellidos del niño')
                             ->required()
                             ->maxLength(255),
                         // Forms\Components\TextInput::make('centro_infantil')
@@ -103,6 +105,45 @@ class RegistrarResource extends Resource
 
                             ])
                             ->native(false),
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\TextInput::make('nombre_padre')
+                                    ->placeholder('Nombre Completo')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->label('Padre'),
+                                Forms\Components\TextInput::make('celular_p')
+                                    ->label('Celular del Padre')
+                                    ->numeric()
+                                    ->tel()
+                                    ->minLength(8)
+                                    ->maxLength(8)
+                                    ->required()
+                                    ->inputMode('numeric')
+                                    ->rules(['regex:/^[0-9]{8}$/']),
+
+                            ]),
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\TextInput::make('nombre_madre')
+                                    ->placeholder('Nombre Completo')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->label('Madre'),
+                                Forms\Components\TextInput::make('celular_m')
+                                    ->label('Celular de la Madre')
+                                    ->numeric()
+                                    ->tel()
+                                    ->minLength(8)
+                                    ->maxLength(8)
+                                    ->required()
+                                    ->inputMode('numeric')
+                                    ->rules(['regex:/^[0-9]{8}$/']),
+
+                            ]),
+                        Forms\Components\TextInput::make('direccion')
+                            ->label('Direccion')
+                            ->required(),
                         Forms\Components\Grid::make(3)  // Divide en 3 columnas iguales
                             ->schema([
                                 Forms\Components\TextInput::make('persona_autorizada1')
@@ -125,8 +166,13 @@ class RegistrarResource extends Resource
                                     ->native(false),
 
                                 Forms\Components\TextInput::make('celular1')
+                                    ->numeric()
+                                    ->tel()
+                                    ->minLength(8)
+                                    ->maxLength(8)
                                     ->required()
-                                    ->maxLength(255),
+                                    ->inputMode('numeric')
+                                    ->rules(['regex:/^[0-9]{8}$/']),
                             ]),
                         Forms\Components\Grid::make(3)  // Divide en 3 columnas iguales
                             ->schema([
@@ -149,8 +195,13 @@ class RegistrarResource extends Resource
                                     ->native(false),
 
                                 Forms\Components\TextInput::make('celular2')
-
-                                    ->maxLength(255),
+                                    ->numeric()
+                                    ->tel()
+                                    ->minLength(8)
+                                    ->maxLength(8)
+                                    ->required()
+                                    ->inputMode('numeric')
+                                    ->rules(['regex:/^[0-9]{8}$/']),
                             ]),
                         Forms\Components\Grid::make(3)  // Divide en 3 columnas iguales
                             ->schema([
@@ -172,12 +223,18 @@ class RegistrarResource extends Resource
                                     ->native(false),
 
                                 Forms\Components\TextInput::make('celular3')
-
-                                    ->maxLength(255),
+                                    ->numeric()
+                                    ->tel()
+                                    ->minLength(8)
+                                    ->maxLength(8)
+                                    ->required()
+                                    ->inputMode('numeric')
+                                    ->rules(['regex:/^[0-9]{8}$/']),
                             ]),
                         Forms\Components\FileUpload::make('fotografia')
                             ->required()
-                            ->directory('fotografias') // Subirá las imágenes a storage/app/public/fotografias
+                            // ->directory('fotografias') // Subirá las imágenes a storage/app/public/fotografias
+                            ->disk('public')
                             ->preserveFilenames(),
                     ]),
             ]);
@@ -188,11 +245,30 @@ class RegistrarResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nombres')
-                    ->label('Nombres')
+                    ->label('Nombres Niño/a')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('apellidos')
-                    ->label('Apellidos')
+                    ->label('Apellidos Niño/a')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('centro_infantil')
+                    ->label('Centro Infantil')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('nombre_padre')
+                    ->label('Nombre del Padre')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('celular_p')
+                    ->label('Celular del Padre')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('nombre_madre')
+                    ->label('Nombre de la Madre')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('celular_m')
+                    ->label('Celular de la Madre')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('persona_autorizada1')
                     ->label('Persona Autorizada 1')
                     ->searchable()
@@ -235,7 +311,9 @@ class RegistrarResource extends Resource
                     ->label('Fotografía')
                     ->circular()
                     ->width(50)
-                    ->height(50),
+                    ->height(50)
+                    ->disk('public')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
