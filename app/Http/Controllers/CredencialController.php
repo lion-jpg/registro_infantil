@@ -70,13 +70,13 @@ class CredencialController extends Controller
         $datos = "INFORMACIÓN DE CONTACTO\n"
             . "------------------------\n"
             . "Padre: " . $registrar['nombre_padre'] . "\n"
-            . "Celular: " . $registrar['celular_p'] . "\n"
+            . "📱Celular: " . $registrar['celular_p'] . "\n"
             . "------------------------\n"
             . "Madre: " . $registrar['nombre_madre'] . "\n"
-            . "Celular: " . $registrar['celular_m'] . "\n"
+            . "📱Celular: " . $registrar['celular_m'] . "\n"
             . "------------------------\n"
-            . "Dirección: " . $registrar['direccion'] . "\n"
-            . "Centro Infantil: " . $registrar['centro_infantil'];
+            . "📍Dirección: " . $registrar['direccion'] . "\n"
+            . "🏫Centro Infantil: " . $registrar['centro_infantil'];
 
 
         // $datos = $registrar['nombres']. $registrar['apellidos']. $registrar['celular1'];

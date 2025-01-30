@@ -254,13 +254,20 @@ class RegistrarResource extends Resource
                     ->label('Centro Infantil')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nombre_padre')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->label('Nombre del Padre')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->searchable()// Mantiene la columna visible por defecto
+                    ->extraAttributes([
+                        'class' => 'bg-white dark:bg-gray-800', // Mantiene el fondo claro
+                    ]),
                 Tables\Columns\TextColumn::make('celular_p')
                     ->label('Celular del Padre')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    // ->toggledHiddenByDefault(false) // Mantiene la columna visible por defecto
+                    ->extraAttributes([
+                        'class' => 'bg-white dark:bg-gray-800', // Mantiene el fondo claro
+                    ]),
                 Tables\Columns\TextColumn::make('nombre_madre')
                     ->label('Nombre de la Madre')
                     ->searchable()
