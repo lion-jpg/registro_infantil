@@ -45,9 +45,7 @@ class RegistrarResource extends Resource
                             ->maxLength(255)
                             ->reactive()
                             ->afterStateUpdated(function ($state) {
-                                // dd($state);
-                                // Convierte la primera letra a mayúscula y el resto a minúscula
-                                return ucfirst(strtolower($state));
+                                return strtoupper($state); // Convierte todo el texto a mayúsculas
                             }),
                         Forms\Components\TextInput::make('apellidos')
                             ->placeholder('Apellidos del niño')
@@ -58,6 +56,7 @@ class RegistrarResource extends Resource
                         //     ->maxLength(255),
                         Forms\Components\Select::make('centro_infantil')
                             ->label('Centro Infantil')
+                            ->required()
                             ->options([
                                 'ARCO IRIS' => 'Arco Iris',
                                 'MARIA AUXILIADORA' => 'Maria Auxiliadora',
@@ -170,7 +169,7 @@ class RegistrarResource extends Resource
                                     ->tel()
                                     ->minLength(8)
                                     ->maxLength(8)
-                                    ->required()
+                                    // ->required()
                                     ->inputMode('numeric')
                                     ->rules(['regex:/^[0-9]{8}$/']),
                             ]),
@@ -199,7 +198,7 @@ class RegistrarResource extends Resource
                                     ->tel()
                                     ->minLength(8)
                                     ->maxLength(8)
-                                    ->required()
+                                    // ->required()
                                     ->inputMode('numeric')
                                     ->rules(['regex:/^[0-9]{8}$/']),
                             ]),
@@ -227,13 +226,12 @@ class RegistrarResource extends Resource
                                     ->tel()
                                     ->minLength(8)
                                     ->maxLength(8)
-                                    ->required()
+                                    // ->required()
                                     ->inputMode('numeric')
                                     ->rules(['regex:/^[0-9]{8}$/']),
                             ]),
                         Forms\Components\FileUpload::make('fotografia')
                             ->required()
-                            // ->directory('fotografias') // Subirá las imágenes a storage/app/public/fotografias
                             ->disk('public')
                             ->preserveFilenames(),
                     ]),
@@ -254,20 +252,17 @@ class RegistrarResource extends Resource
                     ->label('Centro Infantil')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nombre_padre')
+                    // ->reactive()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->label('Nombre del Padre')
-                    ->searchable()// Mantiene la columna visible por defecto
-                    ->extraAttributes([
-                        'class' => 'bg-white dark:bg-gray-800', // Mantiene el fondo claro
-                    ]),
+                    ->searchable() // Mantiene la columna visible por defecto
+                ,
                 Tables\Columns\TextColumn::make('celular_p')
                     ->label('Celular del Padre')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable()
-                    // ->toggledHiddenByDefault(false) // Mantiene la columna visible por defecto
-                    ->extraAttributes([
-                        'class' => 'bg-white dark:bg-gray-800', // Mantiene el fondo claro
-                    ]),
+                // ->toggledHiddenByDefault(false) // Mantiene la columna visible por defecto
+                ,
                 Tables\Columns\TextColumn::make('nombre_madre')
                     ->label('Nombre de la Madre')
                     ->searchable()
@@ -290,7 +285,6 @@ class RegistrarResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('persona_autorizada2')
                     ->label('Persona Autorizada 2')
-
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -319,7 +313,6 @@ class RegistrarResource extends Resource
                     ->circular()
                     ->width(50)
                     ->height(50)
-                    ->disk('public')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -344,7 +337,7 @@ class RegistrarResource extends Resource
                     ->button()
                     ->label('Descargar Credencial')
                     ->url(fn($record) => route('generar-credencial', ['id' => $record->id]))
-                    ->icon('heroicon-o-arrow-down-tray')
+                    // ->icon('heroicon-o-arrow-down-tray')
                     ->color('info')
                     ->outlined(),
 
